@@ -1,0 +1,116 @@
+export default {
+  danger: {
+    clear: {
+      action: '立即清除',
+      confirm: '确认清除所有聊天数据？',
+      desc: '将会清除所有会话数据，包括助手、文件、消息、插件等',
+      success: '已清除所有会话消息',
+      title: '清除所有会话消息',
+    },
+    reset: {
+      action: '立即重置',
+      confirm: '确认重置所有设置？',
+      desc: '重置所有设置项回默认值',
+      title: '重置所有设置',
+    },
+  },
+  header: {
+    session: '会话设置',
+    sessionWithName: '会话设置 · {{name}}',
+  },
+  settingAgent: {
+    avatar: {
+      title: '头像',
+    },
+    description: {
+      placeholder: '请输入助手描述',
+      title: '助手描述',
+    },
+    name: {
+      placeholder: '请输入助手名称',
+      title: '名称',
+    },
+    prompt: {
+      placeholder: '请输入角色 Prompt 提示词',
+      title: '角色设定',
+    },
+    tag: {
+      placeholder: '请输入标签',
+      title: '标签',
+    },
+    title: '助手信息',
+  },
+  settingChat: {
+    autoCreateTopicThreshold: {
+      desc: '当前消息数超过设定该值后，将自动创建话题',
+      title: '消息阈值',
+    },
+    compressThreshold: {
+      desc: '当未压缩的历史消息超过该值时，将进行压缩',
+      title: '历史消息长度压缩阈值',
+    },
+    enableAutoCreateTopic: {
+      desc: '会话过程中是否自动创建话题，仅在临时话题中生效',
+      title: '自动创建话题',
+    },
+    enableCompressThreshold: {
+      title: '是否开启历史消息长度压缩阈值',
+    },
+    enableHistoryCount: {
+      alias: '不限制',
+      limited: '只包含 {{number}} 条会话消息',
+      title: '限制历史消息数',
+      unlimited: '不限历史消息数',
+    },
+    historyCount: {
+      desc: '每次请求携带的消息数（包括最新编写的提问。每个提问和回答都计算1）',
+      title: '附带消息数',
+    },
+    inputTemplate: {
+      desc: '用户最新的一条消息会填充到此模板',
+      placeholder: '预处理模版 {{text}} 将替换为实时输入信息',
+      title: '用户输入预处理',
+    },
+    knowledgeBase: {
+      desc: '回答前先从所选知识库检索相关内容',
+      title: '知识库',
+      unset: '不使用知识库',
+    },
+    searchEngine: {
+      desc: '回答前先联网搜索相关内容',
+      title: '联网搜索',
+    },
+    title: '聊天设置',
+  },
+  settingPlugin: {
+    title: '插件列表',
+  },
+  settingSystem: {
+    accessCode: {
+      desc: '管理员已开启加密访问',
+      placeholder: '请输入访问密码',
+      title: '访问密码',
+    },
+    title: '系统设置',
+  },
+  settingTheme: {
+    avatar: {
+      title: '头像',
+    },
+    fontSize: {
+      desc: '聊天内容的字体大小',
+      marks: {
+        normal: '标准',
+      },
+      title: '字体大小',
+    },
+    lang: {
+      autoMode: '跟随系统',
+      title: '语言',
+    },
+    title: '主题设置',
+  },
+  tab: {
+    common: '通用设置',
+  },
+};

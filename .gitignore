@@ -1,0 +1,58 @@
+# 运行时配置和数据(由 tomechat init 生成)
+*.yaml
+!docker/docker-compose.yaml
+data/
+/libs/server/data/
+/libs/server/tomechat/data/
+*.log
+*.log.*
+*.bak
+
+# frontend(WebUI)例外:源码 config、i18n JSON、PWA manifest 均需入库
+!frontend/**/*.json
+!frontend/**/config/
+
+# frontend 构建产物与依赖
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+frontend/tsconfig.tsbuildinfo
+frontend/.playwright-mcp/
+
+# AI/IDE 工具产物
+.claude/
+.cursor/
+.superpowers/
+.doc/
+.vscode/
+.idea/
+
+# uv
+uv.toml
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+.coverage.*
+htmlcov/
+.pyre/
+
+# 虚拟环境
+.env
+.venv
+venv/
+
+# OS
+.DS_Store
+
+# 杂项
+test.py
+
+frontend/DESIGN.md

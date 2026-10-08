@@ -1,0 +1,82 @@
+{
+  "base": {
+    "addFile": "Add File",
+    "deleteConfirm": "Confirm deleting {{name}}?",
+    "deleteFail": "Delete failed",
+    "deleteFromKnowledgeBase": "Delete from Knowledge Base",
+    "deleteFromVectorStore": "Delete from Vector Store",
+    "deleteKnowledgeBase": "Delete Knowledge Base",
+    "documentName": "Document Name",
+    "downloadFail": "Failed to download {{name}}",
+    "downloadSelected": "Download Selected Documents",
+    "index": "No.",
+    "irreversible": "This action cannot be undone.",
+    "rebuild": "Rebuild Vector Store from Source Files",
+    "rebuilding": "Rebuilding vector store…",
+    "rebuildConfirm": "Confirm rebuilding the vector store of {{name}} from source files?",
+    "rebuildSuccess": "Vector store rebuilt successfully",
+    "reAddConfirm": "Confirm re-adding the selected documents to the vector store?",
+    "reAddToVectorStore": "Re-add to Vector Store",
+    "requestError": "Request error",
+    "selectAll": "Select All",
+    "selectFile": "Select {{name}}",
+    "sourceFile": "Source File",
+    "splitter": "Splitter",
+    "updateFail": "Update failed",
+    "vectorStore": "Vector Store"
+  },
+  "breadcrumb": {
+    "knowledgeBase": "Knowledge Base"
+  },
+  "cancel": "Cancel",
+  "card": {
+    "delete": "Delete",
+    "deleteConfirmDesc": "This action cannot be undone.",
+    "deleteConfirmTitle": "Confirm deleting {{name}}?",
+    "edit": "Edit"
+  },
+  "config": {
+    "intro": "Description",
+    "introPlaceholder": "Briefly describe your knowledge base",
+    "introRequired": "Please enter a knowledge base description",
+    "name": "Knowledge base name",
+    "namePlaceholder": "Name your knowledge base",
+    "nameRequired": "Please enter a knowledge base name",
+    "save": "Save",
+    "saving": "Saving...",
+    "title": "Knowledge Base Settings"
+  },
+  "createKnowledge": "New Knowledge Base",
+  "createModal": {
+    "intro": "Description",
+    "name": "Knowledge base name",
+    "nameRequired": "Please enter a knowledge base name",
+    "title": "Create Knowledge Base"
+  },
+  "confirm": "Confirm",
+  "fileModal": {
+    "chunkOverlap": "Chunk overlap",
+    "chunkSize": "Max chunk size",
+    "fileRequired": "Please select a file",
+    "notRefreshVsCache": "Skip vector store update (for FAISS)",
+    "override": "Overwrite existing files",
+    "remove": "Remove {{name}}",
+    "reAddTitle": "Re-add to Vector Store",
+    "title": "Add File",
+    "updateFail": "Failed to update knowledge base",
+    "uploadHint": "Click or drag files here to upload",
+    "vectorize": "Vectorize",
+    "zhTitleEnhance": "Enable Chinese title enhancement"
+  },
+  "no": "No",
+  "segment": {
+    "confirmEdit": "Confirm Changes",
+    "title": "Knowledge Segment"
+  },
+  "submitting": "Submitting...",
+  "tab": {
+    "base": "Knowledge Base",
+    "config": "Configuration"
+  },
+  "yes": "Yes"
+}

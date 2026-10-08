@@ -1,0 +1,54 @@
+services:
+  tomechat:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    # Replace with an immutable version tag to use a private registry:
+    # image: registry.example.com/tomechat:${TAG}
+    restart: always
+    ports:
+      - "7861:7861"
+    environment:
+      - TOMECHAT_ROOT=/data
+      # NOTE: MODEL_API_* overrides the same fields on ALL configured model platforms
+      # (single-platform deployment). For multi-platform, deploy from source and
+      # configure model_settings.yaml instead.
+      - MODEL_API_BASE=${MODEL_API_BASE:-https://api.openai.com/v1}
+      - MODEL_API_KEY=${MODEL_API_KEY:?MODEL_API_KEY is required}
+      - MODEL_CHAT_MODEL=${MODEL_CHAT_MODEL:-gpt-4o-mini}
+      - MODEL_EMBEDDING_MODEL=${MODEL_EMBEDDING_MODEL:-text-embedding-3-small}
+      # Optional; leave empty to disable (lower precedence than model_settings.yaml fields)
+      - MODEL_API_PROXY=${MODEL_API_PROXY:-}
+      - MODEL_PLATFORM_TYPE=${MODEL_PLATFORM_TYPE:-}
+      - MODEL_EMBEDDING_API_BASE=${MODEL_EMBEDDING_API_BASE:-}
+      - MODEL_EMBEDDING_API_KEY=${MODEL_EMBEDDING_API_KEY:-}
+      - MODEL_EMBEDDING_API_PROXY=${MODEL_EMBEDDING_API_PROXY:-}
+    volumes:
+      - tomechat_data:/data
+    healthcheck:
+      test: ["CMD", "python", "-c", "import httpx; r=httpx.get('http://127.0.0.1:7861/docs', timeout=5); exit(0 if r.status_code<500 else 1)"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  tomechat-web:
+    build:
+      context: ../frontend
+      dockerfile: Dockerfile
+    # Replace with an immutable version tag to use a private registry:
+    # image: registry.example.com/tomechat-web:${TAG}
+    restart: always
+    ports:
+      - "3210:3210"
+    environment:
+      # Backend endpoints proxied by Next.js server-side routes (via the compose network)
+      - TOMECHAT_PROXY_URL=http://tomechat:7861/v1
+      - KNOWLEDGE_PROXY_URL=http://tomechat:7861/knowledge_base
+      # Optional: access codes (comma-separated); leave empty to disable auth
+      - ACCESS_CODE=${ACCESS_CODE:-}
+    depends_on:
+      tomechat:
+        condition: service_healthy
+
+volumes:
+  tomechat_data:

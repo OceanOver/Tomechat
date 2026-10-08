@@ -1,0 +1,82 @@
+{
+  "base": {
+    "addFile": "添加文件",
+    "deleteConfirm": "确认删除 {{name}} 吗?",
+    "deleteFail": "删除失败",
+    "deleteFromKnowledgeBase": "从知识库中删除",
+    "deleteFromVectorStore": "向量库删除",
+    "deleteKnowledgeBase": "删除知识库",
+    "documentName": "文档名称",
+    "downloadFail": "下载 {{name}} 失败",
+    "downloadSelected": "下载选中文档",
+    "index": "序号",
+    "irreversible": "该操作不可撤销。",
+    "rebuild": "依据源文件重建向量库",
+    "rebuilding": "正在重建向量库…",
+    "rebuildConfirm": "确认依据源文件重建 {{name}} 的向量库吗?",
+    "rebuildSuccess": "重建向量库成功",
+    "reAddConfirm": "确认将所选数据重新添加至向量库吗?",
+    "reAddToVectorStore": "重新添加至向量库",
+    "requestError": "请求错误",
+    "selectAll": "全选",
+    "selectFile": "选择 {{name}}",
+    "sourceFile": "源文件",
+    "splitter": "分词器",
+    "updateFail": "更新失败",
+    "vectorStore": "向量库"
+  },
+  "breadcrumb": {
+    "knowledgeBase": "知识库"
+  },
+  "cancel": "取消",
+  "card": {
+    "delete": "删除",
+    "deleteConfirmDesc": "删除后不可恢复。",
+    "deleteConfirmTitle": "确认 {{name}} 删除吗?",
+    "edit": "编辑"
+  },
+  "config": {
+    "intro": "知识库简介",
+    "introPlaceholder": "请简单介绍你的知识库",
+    "introRequired": "请输入知识库简介",
+    "name": "知识库名称",
+    "namePlaceholder": "请为知识库命名",
+    "nameRequired": "请输入知识库名称",
+    "save": "保存",
+    "saving": "保存中...",
+    "title": "知识库设置"
+  },
+  "createKnowledge": "新建知识库",
+  "createModal": {
+    "intro": "知识库简介",
+    "name": "知识库名称",
+    "nameRequired": "请输入知识库名称",
+    "title": "创建知识库"
+  },
+  "confirm": "确 认",
+  "fileModal": {
+    "chunkOverlap": "相邻文本重合长度",
+    "chunkSize": "单段文本最大长度",
+    "fileRequired": "请选择文件",
+    "notRefreshVsCache": "暂不保存向量库（用于FAISS）",
+    "override": "覆盖已有文件",
+    "remove": "移除 {{name}}",
+    "reAddTitle": "重新添加至向量库",
+    "title": "添加文件",
+    "updateFail": "更新知识库失败",
+    "uploadHint": "单击或拖动文件到此区域进行上传",
+    "vectorize": "进行向量化",
+    "zhTitleEnhance": "开启中文标题加强"
+  },
+  "no": "否",
+  "segment": {
+    "confirmEdit": "确认修改",
+    "title": "知识片段"
+  },
+  "submitting": "提交中...",
+  "tab": {
+    "base": "知识库",
+    "config": "配置"
+  },
+  "yes": "是"
+}

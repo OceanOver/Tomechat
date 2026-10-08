@@ -1,0 +1,108 @@
+[project]
+name = "server"
+# 版本唯一来源是 tomechat/__init__.py 的 __version__，此处动态读取
+dynamic = ["version"]
+description = "Tomechat, private RAG app with langchain"
+readme = "README.md"
+requires-python = ">=3.10,<=3.14"
+dependencies = [
+    # LangChain 1.x:create_agent 底座由 langchain 传递引入,不显式声明
+    "langchain>=1.0,<2.0",
+    "langchain-community>=0.4",
+    "langchain-openai>=1.0,<2.0",
+    "langchain-text-splitters>=1.0",
+    "fastapi~=0.136.3",
+    "sse-starlette~=1.8.2",
+    "nltk~=3.8.1",
+    "uvicorn>=0.27.0.post1",
+    "unstructured~=0.11.0",
+    "python-magic-bin ; sys_platform == 'win32'",
+    "sqlalchemy~=2.0.25",
+    "faiss-cpu>=1.8.0,<1.11",
+    "jieba==0.42.1",
+    "rank-bm25==0.2.2",
+    "opencv-python==4.10.0.84",
+    "pymupdf~=1.23.16",
+    "rapidocr-onnxruntime~=1.3.8",
+    "onnxruntime>=1.17,<1.21",
+    "requests~=2.32.5",
+    "urllib3<3",
+    "chardet<6",
+    "numexpr>=1",
+    "tqdm>=4.66.1",
+    "numpy>=1.24.4,<3.0.0",
+    "pandas>=2,<3",
+    # fastapi>=0.136 要求 pydantic>=2.9.0，故下界同步抬升
+    "pydantic>=2.9.0,<3.0.0",
+    "httpx[brotli,http2,socks]>=0.25.2",
+    "python-multipart==0.0.9",
+    "python-docx~=1.1.2",
+    "memoization==0.4.0",
+    "pydantic-settings>=2.10.1,<3.0.0",
+    "ruamel-yaml==0.18.6",
+    "loguru>=0.7.2,<0.8.0",
+    "rich>=13.9.4,<14.0.0",
+    "langchain-tavily>=0.2",
+    "langfuse>=2.40.0,<3.0.0",
+]
+
+[project.scripts]
+tomechat = "tomechat.cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.version]
+path = "tomechat/__init__.py"
+
+[tool.hatch.build.targets.wheel]
+packages = ["tomechat"]
+
+[tool.ruff]
+line-length = 120
+exclude = [
+    "tests/examples/non-utf8-encoding.py",
+    "tests/integration_tests/examples/non-utf8-encoding.py",
+]
+
+[tool.ruff.lint]
+select = [
+    "E",  # pycodestyle
+    "F",  # pyflakes
+    "I",  # isort
+    "T201", # print
+]
+
+[tool.ruff.lint.per-file-ignores]
+# print 是 CLI/启动脚本/迁移脚本的刻意输出
+"tomechat/startup.py" = ["T201"]
+"tomechat/server/knowledge_base/migrate.py" = ["T201"]
+# 测试里 sys.path/env 设置须在 import 前;print 用于调试输出
+"tests/**" = ["T201", "E402"]
+# pydantic 模型的可变默认值会被深拷贝，误报;DATA_PATH 等配置属性名保持大写风格
+"tomechat/settings.py" = ["RUF012", "N802", "E402", "E501"]
+
+[tool.mypy]
+ignore_missing_imports = true
+disallow_untyped_defs = true
+exclude = ["notebooks", "examples", "example_data"]
+
+[tool.coverage.run]
+omit = [
+    "tests/*",
+]
+
+[tool.pytest.ini_options]
+addopts = "--strict-markers --strict-config --durations=5 -svv"
+markers = [
+    "requires: mark tests as requiring a specific library",
+    "scheduled: mark tests to run in scheduled testing",
+    "compile: mark placeholder test used to compile integration tests without running them"
+]
+# asyncio_mode = "auto"
+
+[tool.codespell]
+skip = '.git,*.pdf,*.svg,*.pdf,*.yaml,*.ipynb,uv.lock,*.min.js,*.css,package-lock.json,example_data,_dist,examples,*.trig,*.json,*.md,*.html,*.txt,*.csv'
+ignore-regex = '.*(Stati Uniti|Tense=Pres).*'
+ignore-words-list = 'momento,collison,ned,foor,reworkd,parth,whats,aapply,mysogyny,unsecure,damon,crate,aadd,symbl,precesses,accademia,nin'

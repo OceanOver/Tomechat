@@ -1,0 +1,15 @@
+Dockerfile
+.dockerignore
+.git
+node_modules
+npm-debug.log
+.next
+scripts
+docs
+tests
+__mocks__
+.github
+*.md
+.env
+.env.example
+tsconfig.tsbuildinfo

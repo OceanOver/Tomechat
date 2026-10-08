@@ -1,0 +1,132 @@
+{
+  "about": {
+    "title": "About"
+  },
+  "danger": {
+    "clear": {
+      "action": "Clear Now",
+      "confirm": "Confirm to clear all chat data?",
+      "desc": "This will clear all session data, including agent, files, messages, plugins, etc.",
+      "success": "All session messages have been cleared",
+      "title": "Clear All Session Messages"
+    },
+    "reset": {
+      "action": "Reset Now",
+      "confirm": "Confirm to reset all settings?",
+      "desc": "Reset all settings to default values",
+      "title": "Reset All Settings"
+    }
+  },
+  "header": {
+    "session": "Session Settings",
+    "sessionWithName": "Session Settings · {{name}}"
+  },
+  "settingAgent": {
+    "avatar": {
+      "title": "Avatar"
+    },
+    "description": {
+      "placeholder": "Enter agent description",
+      "title": "Agent Description"
+    },
+    "name": {
+      "placeholder": "Enter agent name",
+      "title": "Name"
+    },
+    "prompt": {
+      "placeholder": "Enter role prompt word",
+      "title": "Role Setting"
+    },
+    "tag": {
+      "placeholder": "Enter tag",
+      "title": "Tag"
+    },
+    "title": "Agent Information"
+  },
+  "settingChat": {
+    "autoCreateTopicThreshold": {
+      "desc": "Automatically create a topic when the current message count exceeds this value",
+      "title": "Message Threshold"
+    },
+    "compressThreshold": {
+      "desc": "When the uncompressed history messages exceed this value, compression will be applied",
+      "title": "History Message Length Compression Threshold"
+    },
+    "enableAutoCreateTopic": {
+      "desc": "Whether to automatically create a topic during the conversation, only effective in temporary topics",
+      "title": "Auto Create Topic"
+    },
+    "enableCompressThreshold": {
+      "title": "Enable History Message Length Compression Threshold"
+    },
+    "enableHistoryCount": {
+      "alias": "Unlimited",
+      "limited": "Include only {{number}} conversation messages",
+      "title": "Limit History Message Count",
+      "unlimited": "Unlimited history message count"
+    },
+    "historyCount": {
+      "desc": "Number of historical messages carried with each request",
+      "title": "Attached History Message Count"
+    },
+    "inputTemplate": {
+      "desc": "The user's latest message will be filled into this template",
+      "placeholder": "Preprocessing template {{text}} will be replaced with real-time input information",
+      "title": "User Input Preprocessing"
+    },
+    "knowledgeBase": {
+      "desc": "Retrieve relevant content from the selected knowledge base before answering",
+      "title": "Knowledge Base",
+      "unset": "No knowledge base"
+    },
+    "title": "Chat Settings"
+  },
+  "settingPlugin": {
+    "title": "Plugin List"
+  },
+  "settingSystem": {
+    "accessCode": {
+      "desc": "Encryption access is enabled by the administrator",
+      "placeholder": "Enter access password",
+      "title": "Access Password"
+    },
+    "title": "System Settings"
+  },
+  "settingTheme": {
+    "avatar": {
+      "title": "Avatar"
+    },
+    "fontSize": {
+      "desc": "Font size for chat content",
+      "marks": {
+        "normal": "Normal"
+      },
+      "title": "Font Size"
+    },
+    "lang": {
+      "autoMode": "Follow System",
+      "title": "Language"
+    },
+    "neutralColor": {
+      "desc": "Custom neutral color for different color tendencies",
+      "title": "Neutral Color"
+    },
+    "primaryColor": {
+      "desc": "Custom primary theme color",
+      "title": "Primary Color"
+    },
+    "themeMode": {
+      "auto": "Auto",
+      "dark": "Dark",
+      "light": "Light",
+      "title": "Theme"
+    },
+    "title": "Theme Settings"
+  },
+  "tab": {
+    "about": "About",
+    "agent": "Default Agent",
+    "common": "Common Settings",
+    "tts": "Text-to-Speech"
+  }
+}

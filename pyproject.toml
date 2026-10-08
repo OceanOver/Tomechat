@@ -1,0 +1,37 @@
+[project]
+name = "tomechat"
+# 虚拟 workspace 根（无 build-system，不构建不发版），此版本仅占位；
+# 真实版本唯一来源：server/tomechat/__init__.py 的 __version__
+version = "0.1.0"
+description = "Tomechat"
+readme = "README.md"
+requires-python = ">=3.10,<=3.14"
+dependencies = [
+    "langchain-google-genai>=4.4.0",
+    "server",
+]
+
+[dependency-groups]
+test = [
+    "pytest>=7.3.0,<8.0.0",
+    "pytest-cov>=4.0.0,<5.0.0",
+]
+lint = [
+    "ruff>=0.12.0,<0.13.0",
+]
+codespell = [
+    "codespell>=2.2.0,<3.0.0",
+]
+
+# Local mirror config only: set via uv.toml or UV_INDEX_URL env var, not committed
+# [tool.uv]
+# index-url = "https://pypi.tuna.tsinghua.edu.cn/simple/"
+
+[tool.uv.workspace]
+members = ["server"]
+
+[tool.uv.sources]
+server = { workspace = true }
+
+[tool.ruff]
+extend-include = ["*.ipynb"]

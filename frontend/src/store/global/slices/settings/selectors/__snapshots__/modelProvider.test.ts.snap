@@ -1,0 +1,32 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`modelProviderSelectors > CUSTOM_MODELS > custom deletion, addition, and renaming of models 1`] = `
+[
+  {
+    "chatModels": [
+      {
+        "displayName": "chatglm3-6b",
+        "functionCall": true,
+        "hidden": undefined,
+        "id": "chatglm3-6b",
+        "tokens": 128000,
+      },
+      {
+        "displayName": "qwen-turbo-0624",
+        "functionCall": true,
+        "hidden": undefined,
+        "id": "qwen-turbo",
+        "tokens": 128000,
+      },
+      {
+        "displayName": "qwen-plus-0724",
+        "hidden": undefined,
+        "id": "qwen-plus",
+        "tokens": 128000,
+      },
+    ],
+    "enabled": true,
+    "id": "Tomechat",
+  },
+]
+`;

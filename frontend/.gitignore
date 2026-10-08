@@ -1,0 +1,39 @@
+# dependencies
+node_modules
+*.log
+
+# lockfiles other than pnpm's
+package-lock.json
+bun.lockb
+
+# build output
+.next
+out
+dist
+coverage
+
+# caches
+.eslintcache
+.stylelintcache
+*.tsbuildinfo
+
+# environment
+.env
+.env*.local
+
+# editors / tools
+.idea
+.vscode
+.history
+.DS_Store
+
+# project-local, not published
+.claude/
+.doc/
+.playwright-mcp/
+*.png
+!public/**/*.png
+
+# misc
+next-env.d.ts
+.vercel

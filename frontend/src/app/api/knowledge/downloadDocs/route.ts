@@ -1,0 +1,17 @@
+import { getServerConfig } from '@/config/server';
+
+const { KNOWLEDGE_PROXY_URL } = getServerConfig();
+
+export const GET = async (request: Request) => {
+    const searchParams = new URL(request.url).searchParams;
+    const knowledge_base_name = searchParams.get('knowledge_base_name') as string;
+    const file_name = searchParams.get('file_name') as string;
+    const preview = searchParams.get('preview') as string;
+ 
+    const queryString = new URLSearchParams({ file_name, knowledge_base_name, preview }).toString();
+    const fetchRes = await fetch(`${KNOWLEDGE_PROXY_URL}/download_doc?${queryString}`, { cache: 'no-store' });
+    return fetchRes;
+};
+
+// Next.js 14 caches GET route handlers by default — force dynamic so every request hits the backend
+export const dynamic = 'force-dynamic';
