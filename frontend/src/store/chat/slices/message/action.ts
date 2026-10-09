@@ -374,7 +374,7 @@ export const chatMessage: StateCreator<
         messages: preprocessMsgs,
         model: config.model,
         provider: config.provider,
-        knowledge_base_name: config.knowledgeBase,
+        knowledge_base_name: config.knowledgeBase || undefined,
         search_engine: config.searchEngine,
         ...config.params,
       },

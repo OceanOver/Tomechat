@@ -4,6 +4,8 @@
 
 [English](README.md) | [简体中文](README.zh-CN.md)
 
+![Tomechat 界面截图](docs/screenshot.png)
+
 ---
 
 ## 目录
@@ -34,7 +36,6 @@
 | LLM 对话 | 通过 OpenAI-compatible API 调用远程 LLM |
 | 知识库 RAG | 基于 FAISS 向量检索的本地知识库问答 |
 | 搜索引擎对话 | Tavily 搜索引擎检索增强 |
-| 文件对话 | 临时文件上传与对话 |
 | 知识库管理 | 增删改查、文档向量化、FAISS 索引 |
 
 ### 模型服务

@@ -1,4 +1,4 @@
-import { BookOpen } from 'lucide-react';
+import { BookOpen, Check } from 'lucide-react';
 import { memo, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -33,11 +33,14 @@ const KnowledgeBaseAction = memo(() => {
         />
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start" onCloseAutoFocus={(e) => e.preventDefault()}>
-        <DropdownMenuItem onClick={() => updateAgentConfig({ knowledgeBase: undefined })}>
+        {/* updateAgentConfig 走 lodash deep-merge，undefined 会被跳过；用 '' 表示不使用 */}
+        <DropdownMenuItem onClick={() => updateAgentConfig({ knowledgeBase: '' })}>
+          {!knowledgeBase ? <Check className="size-4" /> : <div className="size-4" />}
           {t('settingChat.knowledgeBase.unset')}
         </DropdownMenuItem>
         {kbList.map((kb) => (
           <DropdownMenuItem key={kb.kb_name} onClick={() => updateAgentConfig({ knowledgeBase: kb.kb_name })}>
+            {knowledgeBase === kb.kb_name ? <Check className="size-4" /> : <div className="size-4" />}
             {kb.kb_name}
           </DropdownMenuItem>
         ))}

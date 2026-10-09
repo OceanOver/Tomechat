@@ -4,6 +4,8 @@ RAG knowledge-base chat application built on the LangChain framework and remote 
 
 [English](README.md) | [简体中文](README.zh-CN.md)
 
+![Tomechat Screenshot](docs/screenshot.png)
+
 ---
 
 ## Table of Contents
@@ -34,7 +36,6 @@ Model call boundary: FastAPI is the only model gateway. The Next.js frontend nev
 | LLM chat | Call remote LLMs through OpenAI-compatible APIs |
 | Knowledge-base RAG | Local knowledge-base Q&A based on FAISS vector retrieval |
 | Search engine chat | Tavily web search–augmented chat |
-| File chat | Temporary file upload and chat |
 | Knowledge-base management | CRUD, document vectorization, FAISS index |
 
 ### Model Services
