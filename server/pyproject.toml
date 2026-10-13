@@ -43,7 +43,6 @@ dependencies = [
     "loguru>=0.7.2,<0.8.0",
     "rich>=13.9.4,<14.0.0",
     "langchain-tavily>=0.2",
-    "langfuse>=2.40.0,<3.0.0",
 ]
 
 [project.scripts]

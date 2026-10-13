@@ -6,7 +6,7 @@ import httpx
 from tomechat.settings import Settings
 
 SERVER_ROOT = Path(__file__).parents[2]
-REPO_ROOT = SERVER_ROOT.parents[1]
+REPO_ROOT = SERVER_ROOT.parent
 FRONTEND_ROOT = REPO_ROOT / "frontend"
 
 

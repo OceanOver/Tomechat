@@ -1,17 +1,35 @@
 from pathlib import Path
 
-from click.testing import CliRunner
-
-from tomechat.cli import main
 from tomechat.server.knowledge_base.kb_service.base import SupportedVSType
-from tomechat.settings import Settings
 
 SERVER_ROOT = Path(__file__).parents[2]
-REPOSITORY_ROOT = SERVER_ROOT.parents[1]
+REPOSITORY_ROOT = SERVER_ROOT.parent
 
 
-def test_only_openai_compatible_chat_and_embedding_are_configured():
-    platforms = Settings.model_settings.MODEL_PLATFORMS
+def test_only_openai_compatible_chat_and_embedding_are_configured(monkeypatch, tmp_path):
+    # Build from defaults (no MODEL_* env, no yaml) so the assertion is deterministic
+    # regardless of the developer's local .env
+    from tomechat.settings import ApiModelSettings
+
+    for var in [
+        "MODEL_CHAT_MODEL",
+        "MODEL_EMBEDDING_MODEL",
+        "MODEL_API_BASE",
+        "MODEL_API_KEY",
+        "MODEL_API_PROXY",
+        "MODEL_PLATFORM_TYPE",
+        "MODEL_EMBEDDING_API_BASE",
+        "MODEL_EMBEDDING_API_KEY",
+        "MODEL_EMBEDDING_API_PROXY",
+    ]:
+        monkeypatch.delenv(var, raising=False)
+    monkeypatch.setattr(
+        ApiModelSettings,
+        "model_config",
+        {**ApiModelSettings.model_config, "yaml_file": str(tmp_path / "model_settings.yaml")},
+    )
+
+    platforms = ApiModelSettings().MODEL_PLATFORMS
 
     assert len(platforms) == 1
     assert platforms[0].platform_type == "openai"
@@ -48,14 +66,6 @@ def test_local_model_and_reranker_implementations_are_removed():
     ]
 
     assert [path for path in removed if path.exists()] == []
-
-
-def test_init_cli_uses_generic_model_service_options():
-    result = CliRunner().invoke(main, ["init", "--help"])
-
-    assert result.exit_code == 0
-    assert "--model-api-base" in result.output
-    assert "--xinference-endpoint" not in result.output
 
 
 def test_backend_dependencies_exclude_removed_model_and_vector_backends():

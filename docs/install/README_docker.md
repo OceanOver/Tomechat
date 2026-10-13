@@ -33,13 +33,16 @@ docker compose -f docker/docker-compose.yaml build
 
 | 环境变量 | 必填 | 默认值 | 说明 |
 |----------|------|--------|------|
-| `MODEL_API_BASE` | 否 | `https://api.openai.com/v1` | 模型平台 API 地址 |
-| `MODEL_API_KEY` | **是** | - | 模型平台 API Key |
+| **LLM 服务** | | | |
+| `MODEL_API_BASE` | 否 | `https://api.openai.com/v1` | LLM 平台 API 地址 |
+| `MODEL_API_KEY` | **是** | - | LLM 平台 API Key |
 | `MODEL_CHAT_MODEL` | 否 | `gpt-4o-mini` | 默认 Chat 模型 |
-| `MODEL_EMBEDDING_MODEL` | 否 | `text-embedding-3-small` | 默认 Embedding 模型 |
-| `MODEL_API_PROXY` | 否 | 空 | API 代理地址（如 `http://127.0.0.1:7890`） |
 | `MODEL_PLATFORM_TYPE` | 否 | 空 | 平台类型: `openai` 或 `gemini`，留空走 openai 兼容路由 |
-| `MODEL_EMBEDDING_API_BASE` / `_API_KEY` / `_API_PROXY` | 否 | 空 | Embedding 独立平台配置（不填则与 LLM 同平台） |
+| `MODEL_API_PROXY` | 否 | 空 | LLM API 代理地址（如 `http://127.0.0.1:7890`） |
+| **Embedding 服务** | | | |
+| `MODEL_EMBEDDING_MODEL` | 否 | `text-embedding-3-small` | 默认 Embedding 模型 |
+| `MODEL_EMBEDDING_API_BASE` / `_API_KEY` / `_API_PROXY` | 否 | 空 | Embedding 独立供应商配置（可指向不同平台；未设置项回退到 LLM 服务配置） |
+| **前端** | | | |
 | `ACCESS_CODE` | 否 | 空 | 前端访问口令，逗号分隔多个，留空不启用 |
 
 ```shell
@@ -49,7 +52,7 @@ export MODEL_CHAT_MODEL=gpt-4o-mini
 export MODEL_EMBEDDING_MODEL=text-embedding-3-small
 ```
 
-> 注意: `MODEL_API_BASE` / `MODEL_API_KEY` 会覆盖**所有**已配置模型平台的对应字段, 适合单平台部署。如需多平台分别配置, 请使用源码部署并通过 `model_settings.yaml` 配置。
+> 注意: 设置了任一 `MODEL_*` 变量时, 环境变量配置会**整体接管**模型平台列表（单平台部署），`model_settings.yaml` 的平台配置被忽略。如需多平台配置（如多个 LLM 供应商）, 请使用源码部署并通过 `model_settings.yaml` 配置。LLM 服务与 Embedding 服务相互独立, 可通过 `MODEL_EMBEDDING_API_*` 指向不同供应商。
 
 ##### 3. 启动服务
 ```shell

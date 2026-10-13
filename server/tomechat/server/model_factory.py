@@ -245,8 +245,9 @@ def get_Embeddings(
     params = dict(model=embed_model)
     # ark and other OpenAI-compatible endpoints only accept string input, not pre-tokenized token id arrays
     params["check_embedding_ctx_length"] = False
-    # ark endpoints limit the per-request input array size (doubao-embedding-vision caps at 10); default 1000 gets a 400
-    params["chunk_size"] = 10
+    # ark endpoints cap the per-request input array size; doubao-embedding-vision allows only 10,
+    # text embed models allow much larger batches (fewer requests, fewer 429s on batch uploads)
+    params["chunk_size"] = 10 if "vision" in embed_model.lower() else 32
     # ark rate limits are strict; default 2 retries with short backoff always 429 on batch uploads
     params["max_retries"] = 8
     try:

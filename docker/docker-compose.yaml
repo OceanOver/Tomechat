@@ -10,7 +10,7 @@ services:
       - "7861:7861"
     environment:
       - TOMECHAT_ROOT=/data
-      # NOTE: MODEL_API_* overrides the same fields on ALL configured model platforms
+      # NOTE: any MODEL_* variable set here replaces the whole model platform list
       # (single-platform deployment). For multi-platform, deploy from source and
       # configure model_settings.yaml instead.
       - MODEL_API_BASE=${MODEL_API_BASE:-https://api.openai.com/v1}

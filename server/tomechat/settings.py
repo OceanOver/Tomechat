@@ -268,56 +268,75 @@ class ApiModelSettings(BaseFileSettings):
     model_config = SettingsConfigDict(yaml_file=TOMECHAT_ROOT / "model_settings.yaml")
 
     def model_post_init(self, __context: t.Any) -> None:
-        # Env vars take precedence over yaml config, so model service info (incl. nested MODEL_PLATFORMS) can be injected via env
-        if llm_model := os.environ.get("MODEL_CHAT_MODEL"):
-            self.DEFAULT_LLM_MODEL = llm_model
-        if embed_model := os.environ.get("MODEL_EMBEDDING_MODEL"):
-            self.DEFAULT_EMBEDDING_MODEL = embed_model
+        # The LLM service and the embedding service are configured independently and
+        # may use different providers. When any MODEL_* env var is set, the platform
+        # list is rebuilt from env entirely (single-platform deployment); with no
+        # MODEL_* env vars, yaml MODEL_PLATFORMS is used as-is (multi-platform setups).
+        if chat := os.environ.get("MODEL_CHAT_MODEL"):
+            self.DEFAULT_LLM_MODEL = chat
+        if embed := os.environ.get("MODEL_EMBEDDING_MODEL"):
+            self.DEFAULT_EMBEDDING_MODEL = embed
 
-        if api_base := os.environ.get("MODEL_API_BASE"):
-            for platform in self.MODEL_PLATFORMS:
-                platform.api_base_url = api_base
-        if api_key := os.environ.get("MODEL_API_KEY"):
-            for platform in self.MODEL_PLATFORMS:
-                platform.api_key = api_key
-        if api_proxy := os.environ.get("MODEL_API_PROXY"):
-            for platform in self.MODEL_PLATFORMS:
-                platform.api_proxy = api_proxy
-        if platform_type := os.environ.get("MODEL_PLATFORM_TYPE"):
-            if platform_type in t.get_args(PlatformConfig.model_fields["platform_type"].annotation):
-                for platform in self.MODEL_PLATFORMS:
-                    platform.platform_type = t.cast(t.Literal["openai", "gemini"], platform_type)
+        llm_env = {k: os.environ.get(v, "") for v, k in [
+            ("MODEL_API_BASE", "api_base_url"),
+            ("MODEL_API_KEY", "api_key"),
+            ("MODEL_API_PROXY", "api_proxy"),
+        ]}
+        embed_env = {k: os.environ.get(v, "") for v, k in [
+            ("MODEL_EMBEDDING_API_BASE", "api_base_url"),
+            ("MODEL_EMBEDDING_API_KEY", "api_key"),
+            ("MODEL_EMBEDDING_API_PROXY", "api_proxy"),
+        ]}
+        platform_type = os.environ.get("MODEL_PLATFORM_TYPE", "")
 
-        # Embedding may use a different platform than the LLM (base_url/key/proxy configured independently; falls back to the LLM platform when unset)
-        embed_base = os.environ.get("MODEL_EMBEDDING_API_BASE")
-        embed_key = os.environ.get("MODEL_EMBEDDING_API_KEY")
-        embed_proxy = os.environ.get("MODEL_EMBEDDING_API_PROXY")
-        if embed_base or embed_key or embed_proxy:
-            embed_model = self.DEFAULT_EMBEDDING_MODEL
-            for platform in self.MODEL_PLATFORMS:
-                embed_list = platform.embed_models if isinstance(platform.embed_models, list) else []
-                if embed_model not in embed_list:
-                    continue
-                if platform.llm_models:
-                    # Same platform hosts both LLM and embedding: split out a standalone embedding platform if endpoints differ
-                    platform.embed_models = []
-                    self.MODEL_PLATFORMS.append(
-                        PlatformConfig(
-                            platform_name=f"{platform.platform_name}-embedding",
-                            api_base_url=embed_base or platform.api_base_url,
-                            api_key=embed_key or platform.api_key,
-                            api_proxy=embed_proxy or platform.api_proxy,
-                            embed_models=[embed_model],
-                        )
-                    )
-                else:
-                    if embed_base:
-                        platform.api_base_url = embed_base
-                    if embed_key:
-                        platform.api_key = embed_key
-                    if embed_proxy:
-                        platform.api_proxy = embed_proxy
-                break
+        if not (chat or embed or platform_type or any(llm_env.values()) or any(embed_env.values())):
+            return super().model_post_init(__context)
+
+        if platform_type and platform_type not in t.get_args(PlatformConfig.model_fields["platform_type"].annotation):
+            logger.warning(f"invalid MODEL_PLATFORM_TYPE '{platform_type}', falling back to 'openai'")
+            platform_type = ""
+
+        llm_platform = PlatformConfig(
+            platform_name="llm",
+            platform_type=t.cast(t.Literal["openai", "gemini"], platform_type or "openai"),
+            api_base_url=llm_env["api_base_url"] or "https://api.openai.com/v1",
+            api_key=llm_env["api_key"],
+            api_proxy=llm_env["api_proxy"],
+            llm_models=[self.DEFAULT_LLM_MODEL],
+        )
+        # Embedding always goes through OpenAI-compatible endpoints; unset fields
+        # fall back to the LLM service config.
+        embed_config = {
+            "api_base_url": embed_env["api_base_url"] or llm_platform.api_base_url,
+            "api_key": embed_env["api_key"] or llm_platform.api_key,
+            "api_proxy": embed_env["api_proxy"] or llm_platform.api_proxy,
+        }
+        merge_into_llm = llm_platform.platform_type == "openai" and all(
+            embed_config[k] == getattr(llm_platform, k) for k in embed_config
+        )
+        if merge_into_llm:
+            llm_platform.embed_models = [self.DEFAULT_EMBEDDING_MODEL]
+            self.MODEL_PLATFORMS = [llm_platform]
+            logger.info(
+                f"model platforms: 1 platform '{llm_platform.platform_name}' hosting "
+                f"LLM '{self.DEFAULT_LLM_MODEL}' and embedding '{self.DEFAULT_EMBEDDING_MODEL}' "
+                f"at {llm_platform.api_base_url}"
+            )
+        else:
+            embed_platform = PlatformConfig(
+                platform_name="embedding",
+                platform_type="openai",
+                embed_models=[self.DEFAULT_EMBEDDING_MODEL],
+                api_base_url=embed_config["api_base_url"],
+                api_key=embed_config["api_key"],
+                api_proxy=embed_config["api_proxy"],
+            )
+            self.MODEL_PLATFORMS = [llm_platform, embed_platform]
+            logger.info(
+                f"model platforms: LLM '{self.DEFAULT_LLM_MODEL}' on '{llm_platform.api_base_url}' "
+                f"({llm_platform.platform_type}); embedding '{self.DEFAULT_EMBEDDING_MODEL}' "
+                f"on '{embed_platform.api_base_url}'"
+            )
 
         return super().model_post_init(__context)
 

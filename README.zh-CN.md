@@ -19,7 +19,7 @@
 
 ## 概述
 
-本项目通过 OpenAI-compatible API 接入远程模型服务，基于 Langchain 框架实现知识库 RAG 问答。
+本项目通过 OpenAI-compatible API（或 Google Gemini 原生 SDK，`MODEL_PLATFORM_TYPE=gemini`）接入远程模型服务，基于 Langchain 框架实现知识库 RAG 问答。
 
 架构组成：
 
@@ -33,18 +33,28 @@
 
 | 功能 | 说明 |
 |------|------|
-| LLM 对话 | 通过 OpenAI-compatible API 调用远程 LLM |
+| LLM 对话 | 通过 OpenAI-compatible API（或 Gemini 原生 SDK）调用远程 LLM |
 | 知识库 RAG | 基于 FAISS 向量检索的本地知识库问答 |
-| 搜索引擎对话 | Tavily 搜索引擎检索增强 |
+| 搜索引擎对话 | Tavily（或自托管 SearxNG）搜索引擎检索增强 |
 | 知识库管理 | 增删改查、文档向量化、FAISS 索引 |
 
 ### 模型服务
 
-仅支持通过 OpenAI-compatible API 接入远程模型服务。通过环境变量配置（见 `.env.example`）：
+通过 OpenAI-compatible API（或 Google Gemini 原生 SDK）接入远程模型服务。**LLM 服务与 Embedding 服务相互独立配置，可以使用不同供应商**（见 `.env.example`）：
 
-- 模型服务商 API Base URL
-- API Key
-- Chat 模型名称和 Embedding 模型名称
+**LLM 服务**
+
+- `MODEL_API_BASE` / `MODEL_API_KEY` — 模型服务商 API Base URL 与 API Key
+- `MODEL_CHAT_MODEL` — 默认 Chat 模型
+- `MODEL_PLATFORM_TYPE` — `openai`（默认）或 `gemini`（Google 原生 SDK；因 Gemini 3 思考模型在兼容端点上缺少 `thought_signature` 回传会报 400）
+- `MODEL_API_PROXY` — HTTP 代理，留空直连
+
+**Embedding 服务**
+
+- `MODEL_EMBEDDING_MODEL` — 默认 Embedding 模型
+- `MODEL_EMBEDDING_API_BASE` / `MODEL_EMBEDDING_API_KEY` / `MODEL_EMBEDDING_API_PROXY` — 可指向不同供应商；未设置的项回退到 LLM 服务配置
+
+> 注意：设置了上述任一 `MODEL_*` 变量时，环境变量配置会**整体接管**平台列表（单平台部署），`model_settings.yaml` 的平台配置被忽略。多平台场景请将 `MODEL_*` 变量全部留空，改用 `model_settings.yaml` 配置。
 
 不部署本地模型、模型权重或 GPU 运行时。不保留 Reranker 和多模态能力。
 
@@ -55,7 +65,7 @@
 #### 0. 软硬件要求
 
 - Python 3.10+
-- Node.js 18+，pnpm
+- Node.js 20+（Node 22，见 `frontend/.nvmrc`），pnpm
 - [uv](https://docs.astral.sh/uv/)
 
 #### 1. 安装后端
@@ -70,11 +80,16 @@ uv sync --group test
 # 设置数据根目录（可选，默认使用当前目录）
 export TOMECHAT_ROOT=/path/to/tomechat_data
 
-# 模型服务配置
+# LLM 服务
 export MODEL_API_KEY=your-api-key
 export MODEL_API_BASE=https://api.openai.com/v1
 export MODEL_CHAT_MODEL=gpt-4o-mini
+
+# Embedding 服务（可使用不同供应商；未设置的 MODEL_EMBEDDING_API_* 项回退到上方 LLM 服务配置）
 export MODEL_EMBEDDING_MODEL=text-embedding-3-small
+
+# 可选：搜索引擎对话（Tavily）
+export TAVILY_API_KEY=your-tavily-key
 ```
 
 数据目录和知识库数据库 Schema 会在 `tomechat start` 启动时自动创建，无需手动初始化。
@@ -89,9 +104,12 @@ uv run tomechat start --api
 
 ```shell
 cd frontend
-pnpm install --frozen-lockfile
+cp .env.example .env
+pnpm install
 pnpm run dev
 ```
+
+前端 `.env` 默认指向 `http://localhost:7861` 的后端。前后端都启动后，访问 <http://localhost:3010>。
 
 ### Docker 部署
 

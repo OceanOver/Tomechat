@@ -110,7 +110,6 @@ module.exports = {
     'node_modules',
     'coverage',
     '.coverage',
-    'jest*',
     '_test_',
     '__test__',
     '*.test.ts',
