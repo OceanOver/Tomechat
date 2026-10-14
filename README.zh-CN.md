@@ -4,6 +4,8 @@
 
 [English](README.md) | [简体中文](README.zh-CN.md)
 
+![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg) ![Python](https://img.shields.io/badge/Python-3.10%2B-blue) ![Node](https://img.shields.io/badge/Node-20%2B-green)
+
 ![Tomechat 界面截图](docs/screenshot.png)
 
 ---
@@ -19,7 +21,7 @@
 
 ## 概述
 
-本项目通过 OpenAI-compatible API（或 Google Gemini 原生 SDK，`MODEL_PLATFORM_TYPE=gemini`）接入远程模型服务，基于 Langchain 框架实现知识库 RAG 问答。
+本项目是一个 chatbot 应用：通过 OpenAI-compatible API（或 Google Gemini 原生 SDK，`MODEL_PLATFORM_TYPE=gemini`）接入远程模型服务，基于 Langchain 框架实现知识库 RAG（检索增强生成）问答，使用 FAISS 向量检索。
 
 架构组成：
 

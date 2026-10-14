@@ -4,6 +4,8 @@ RAG knowledge-base chat application built on the LangChain framework and remote 
 
 [English](README.md) | [简体中文](README.zh-CN.md)
 
+![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg) ![Python](https://img.shields.io/badge/Python-3.10%2B-blue) ![Node](https://img.shields.io/badge/Node-20%2B-green)
+
 ![Tomechat Screenshot](docs/screenshot.png)
 
 ---
@@ -19,7 +21,7 @@ RAG knowledge-base chat application built on the LangChain framework and remote 
 
 ## Overview
 
-Tomechat connects to remote model services through OpenAI-compatible APIs (or the Google Gemini native SDK, via `MODEL_PLATFORM_TYPE=gemini`) and implements knowledge-base RAG chat on top of the LangChain framework.
+Tomechat is a chatbot that connects to remote model services through OpenAI-compatible APIs (or the Google Gemini native SDK, via `MODEL_PLATFORM_TYPE=gemini`) and implements knowledge-base RAG (retrieval-augmented generation) chat with FAISS vector search on top of the LangChain framework.
 
 Architecture:
 
