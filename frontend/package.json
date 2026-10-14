@@ -129,5 +129,5 @@
     "vitest": "~1.2.2",
     "vitest-canvas-mock": "^0.3"
   },
-  "license": "MIT"
+  "license": "SEE LICENSE IN ./LICENSE"
 }

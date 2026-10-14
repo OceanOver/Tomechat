@@ -124,4 +124,4 @@ docker compose -f docker/docker-compose.yaml up -d
 
 ## 协议
 
-本项目基于 [MIT](LICENSE) 协议开源。
+本项目基于 [MIT](LICENSE) 协议开源。前端（`frontend/`）包含派生自 [LobeChat](https://github.com/lobehub/lobe-chat) 的代码，采用独立许可，详见 [frontend/LICENSE](frontend/LICENSE)。

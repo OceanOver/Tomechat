@@ -125,4 +125,4 @@ See the [Docker deployment guide](docs/install/README_docker.md) for details.
 
 ## License
 
-This project is open-sourced under the [MIT](LICENSE) license.
+This project is open-sourced under the [MIT](LICENSE) license. The frontend (`frontend/`) contains code derived from [LobeChat](https://github.com/lobehub/lobe-chat) and is licensed separately, see [frontend/LICENSE](frontend/LICENSE).
