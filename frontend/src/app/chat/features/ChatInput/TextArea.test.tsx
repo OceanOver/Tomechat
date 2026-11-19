@@ -7,12 +7,6 @@ import { useGlobalStore } from '@/store/global';
 
 import InputArea from './TextArea';
 
-let setExpandMock: (expand: boolean) => void;
-
-beforeEach(() => {
-  setExpandMock = vi.fn();
-});
-
 describe('<InputArea />', () => {
   it('renders the TextArea component correctly', () => {
     render(<InputArea />);
@@ -29,13 +23,13 @@ describe('<InputArea />', () => {
   });
 
   it('renders with correct placeholder text', () => {
-    render(<InputArea setExpand={setExpandMock} />);
+    render(<InputArea />);
     const textArea = screen.getByPlaceholderText('sendPlaceholder');
     expect(textArea).toBeInTheDocument();
   });
 
   it('has the correct initial value', () => {
-    render(<InputArea setExpand={setExpandMock} />);
+    render(<InputArea />);
     const textArea = screen.getByRole('textbox');
     expect(textArea).toHaveValue('');
   });
@@ -78,11 +72,16 @@ describe('<InputArea />', () => {
 
     it('does not send a message when Enter is pressed during IME composition', () => {
       const updateInputMessageMock = vi.fn();
+      const sendMessageMock = vi.fn();
       act(() => {
-        useChatStore.setState({ updateInputMessage: updateInputMessageMock });
+        useChatStore.setState({
+          inputMessage: 'abc',
+          sendMessage: sendMessageMock,
+          updateInputMessage: updateInputMessageMock,
+        });
       });
 
-      render(<InputArea setExpand={setExpandMock} />);
+      render(<InputArea />);
       const textArea = screen.getByRole('textbox');
 
       // Start composition (IME input starts)
@@ -92,7 +91,7 @@ describe('<InputArea />', () => {
       fireEvent.keyDown(textArea, { code: 'Enter', key: 'Enter' });
 
       // Since we are in the middle of IME composition, the message should not be sent
-      expect(setExpandMock).not.toHaveBeenCalled();
+      expect(sendMessageMock).not.toHaveBeenCalled();
       expect(updateInputMessageMock).not.toHaveBeenCalled();
 
       // End composition (IME input ends)
@@ -102,7 +101,7 @@ describe('<InputArea />', () => {
       fireEvent.keyDown(textArea, { code: 'Enter', key: 'Enter' });
 
       // Since IME composition has ended, now the message should be sent
-      expect(setExpandMock).toHaveBeenCalled();
+      expect(sendMessageMock).toHaveBeenCalled();
       expect(updateInputMessageMock).toHaveBeenCalled();
     });
 
@@ -112,7 +111,7 @@ describe('<InputArea />', () => {
         useChatStore.setState({ updateInputMessage: updateInputMessageMock });
       });
 
-      render(<InputArea setExpand={setExpandMock} />);
+      render(<InputArea />);
       const textArea = screen.getByRole('textbox');
       const newText = 'New input text';
 
@@ -191,7 +190,7 @@ describe('<InputArea />', () => {
         useChatStore.setState({ chatLoadingId: '123', sendMessage: sendMessageMock });
       });
 
-      render(<InputArea setExpand={setExpandMock} />);
+      render(<InputArea />);
       const textArea = screen.getByRole('textbox');
 
       fireEvent.keyDown(textArea, { code: 'Enter', key: 'Enter', shiftKey: true });
@@ -228,7 +227,7 @@ describe('<InputArea />', () => {
           useGlobalStore.getState().updatePreference({ useCmdEnterToSend: true });
         });
 
-        render(<InputArea setExpand={setExpandMock} />);
+        render(<InputArea />);
         const textArea = screen.getByRole('textbox');
 
         fireEvent.keyDown(textArea, { code: 'Enter', ctrlKey: true, key: 'Enter' });
@@ -248,7 +247,7 @@ describe('<InputArea />', () => {
           useGlobalStore.getState().updatePreference({ useCmdEnterToSend: false });
         });
 
-        render(<InputArea setExpand={setExpandMock} />);
+        render(<InputArea />);
         const textArea = screen.getByRole('textbox');
 
         fireEvent.keyDown(textArea, { code: 'Enter', ctrlKey: true, key: 'Enter' });
@@ -271,7 +270,7 @@ describe('<InputArea />', () => {
           useGlobalStore.getState().updatePreference({ useCmdEnterToSend: true });
         });
 
-        render(<InputArea setExpand={setExpandMock} />);
+        render(<InputArea />);
         const textArea = screen.getByRole('textbox');
 
         fireEvent.keyDown(textArea, { code: 'Enter', key: 'Enter', metaKey: true });
@@ -296,7 +295,7 @@ describe('<InputArea />', () => {
           useGlobalStore.getState().updatePreference({ useCmdEnterToSend: false });
         });
 
-        render(<InputArea setExpand={setExpandMock} />);
+        render(<InputArea />);
         const textArea = screen.getByRole('textbox');
 
         fireEvent.keyDown(textArea, { code: 'Enter', key: 'Enter', metaKey: true });

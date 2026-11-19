@@ -1,4 +1,4 @@
-import { memo, useState } from 'react';
+import { memo } from 'react';
 
 import DraggablePanel from '@/components/DraggablePanel';
 import {
@@ -12,8 +12,6 @@ import Head from './Header';
 import TextArea from './TextArea';
 
 const ChatInput = memo(() => {
-  const [expand, setExpand] = useState<boolean>(false);
-
   const [inputHeight, updatePreference] = useGlobalStore((s) => [
     s.preference.inputHeight,
     s.updatePreference,
@@ -22,7 +20,6 @@ const ChatInput = memo(() => {
   return (
     <DraggablePanel
       expandable={false}
-      fullscreen={expand}
       maxHeight={CHAT_TEXTAREA_MAX_HEIGHT}
       minHeight={CHAT_TEXTAREA_HEIGHT}
       onSizeChange={(_, size) => {
@@ -37,9 +34,9 @@ const ChatInput = memo(() => {
       style={{ zIndex: 10 }}
     >
       <div className="relative flex h-full flex-col gap-2 px-0 pb-4 pt-3">
-        <Head expand={expand} setExpand={setExpand} />
-        <TextArea setExpand={setExpand} />
-        <Footer setExpand={setExpand} />
+        <Head />
+        <TextArea />
+        <Footer />
       </div>
     </DraggablePanel>
   );

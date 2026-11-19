@@ -30,7 +30,7 @@ import { agentSelectors } from '@/store/session/selectors';
 import DragUpload from './DragUpload';
 import { LocalFiles } from './LocalFiles';
 
-const Footer = memo<{ setExpand?: (expand: boolean) => void }>(({ setExpand }) => {
+const Footer = memo(() => {
   const { t } = useTranslation('chat');
   const isMac = useIsMacOS();
 
@@ -101,7 +101,6 @@ const Footer = memo<{ setExpand?: (expand: boolean) => void }>(({ setExpand }) =
                 className="rounded-r-none"
                 onClick={() => {
                   sendMessage();
-                  setExpand?.(false);
                 }}
               >
                 {t('input.send')}

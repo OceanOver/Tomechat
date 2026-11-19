@@ -10,7 +10,7 @@ import { isCommandPressed } from '@/utils/keyboard';
 
 import { useAutoFocus } from './useAutoFocus';
 
-const InputArea = memo<{ setExpand?: (expand: boolean) => void }>(({ setExpand }) => {
+const InputArea = memo(() => {
   const { t } = useTranslation('chat');
   const ref = useRef<HTMLTextAreaElement>(null);
   const isChineseInput = useRef(false);
@@ -73,7 +73,6 @@ const InputArea = memo<{ setExpand?: (expand: boolean) => void }>(({ setExpand }
             e.preventDefault();
 
             sendMessage();
-            setExpand?.(false);
           };
           const commandKey = isCommandPressed(e);
 

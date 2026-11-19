@@ -17,7 +17,7 @@ from tomechat.settings import Settings
 class FaissKBService(KBService):
     vs_path: str
     kb_path: str
-    vector_name: str = None
+    vector_name: str | None = None
 
     def vs_type(self) -> str:
         return SupportedVSType.FAISS
@@ -80,14 +80,15 @@ class FaissKBService(KBService):
 
     def do_add_doc(
         self,
-        docs: List[Document],
+        docs: list[Document],
         **kwargs,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         texts = [x.page_content for x in docs]
         metadatas = [x.metadata for x in docs]
         with self.load_vector_store().acquire() as vs:
+            assert vs.embeddings is not None
             embeddings = vs.embeddings.embed_documents(texts)
-            ids = vs.add_embeddings(text_embeddings=zip(texts, embeddings), metadatas=metadatas)
+            ids = vs.add_embeddings(text_embeddings=zip(texts, embeddings, strict=False), metadatas=metadatas)
             if not kwargs.get("not_refresh_vs_cache"):
                 vs.save_local(self.vs_path)
         doc_infos = [{"id": id, "metadata": doc.metadata} for id, doc in zip(ids, docs)]
